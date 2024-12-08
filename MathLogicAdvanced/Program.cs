@@ -24,12 +24,12 @@ var clauses = new List<Clause>();
 //query.Literals[1] = Resolution.Negate(query.Literals[1]);
 //Console.WriteLine($"Результат резолютивного вывода для запроса {string.Join(" | ",query.Literals)}: {result}");
 
-Console.WriteLine("Введите импликации в формате 'A -> B' (введите 'done' для завершения ввода):");
+Console.WriteLine("Введите импликации в формате 'A -> B' (Нажмите Enter для завершения ввода):");
 
 while (true)
 {
     var input = Console.ReadLine();
-    if (input.ToLower() == "done")
+    if (input.ToLower() == "")
     {
         break;
     }
@@ -62,7 +62,7 @@ if (queryParts.Length == 2)
     bool result = resolution.Resolve(clauses, query);
 
     query.Literals[1] = Resolution.Negate(query.Literals[1]);
-    Console.WriteLine($"Результат резолютивного вывода для запроса {string.Join(" | ", query.Literals)}: {result}");
+    Console.WriteLine($"\nРезультат резолютивного вывода для запроса {string.Join(" | ", query.Literals)}: {result}");
 
 }
 else

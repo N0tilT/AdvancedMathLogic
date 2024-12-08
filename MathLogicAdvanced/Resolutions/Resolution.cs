@@ -10,7 +10,6 @@ namespace MathLogicAdvanced.Resolutions
     {
         public bool Resolve(List<Clause> clauses, Clause query)
         { 
-            //clauses.Add(new Clause(query.Literals.Select(x => Negate(x)).ToList()));
             HashSet<Clause> newClauses = new HashSet<Clause>(clauses);
             Queue<Clause> clausesToTest = new Queue<Clause>(clauses);
 
@@ -18,9 +17,10 @@ namespace MathLogicAdvanced.Resolutions
 
             while (clausesToTest.Count > 0)
             {
-                Console.WriteLine("DISJUNCTORS");
+                Console.WriteLine("\nДизъюнкты:");
                 Console.WriteLine(string.Join("\n", newClauses.ToList().Select(x => string.Join(" | ", x.Literals))));
 
+                if (newClauses.Any(x => x.IsContradictory(query))) return true;
                 var current = clausesToTest.Dequeue();
 
                 List<Clause> resolvents = new List<Clause>();
@@ -37,13 +37,12 @@ namespace MathLogicAdvanced.Resolutions
                         clausesToTest.Enqueue(resolvent);
                 }
 
-                if (newClauses.Any(x => x.IsContradictory(query))) return true;
 
-                Console.WriteLine("RESOLVENTS");
+                Console.WriteLine("\nРезольвенты:");
                 Console.WriteLine(string.Join("\n", resolvents.ToList().Select(x => string.Join(" | ", x.Literals))));
             }
 
-            Console.WriteLine("DISJUNCTORS");
+            Console.WriteLine("Дизъюнкты");
             Console.WriteLine(string.Join("\n",newClauses.ToList().Select(x=>string.Join(" | ",x.Literals))));
 
             return false;
