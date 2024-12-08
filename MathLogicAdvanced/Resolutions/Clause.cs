@@ -11,8 +11,15 @@ namespace MathLogicAdvanced.Resolutions
         public List<string> Literals { get; set; } = literals;
         public bool IsContradictory(Clause query)
         {
-            return Literals.Any(l=>query.Literals.Contains(l));
+            if(Literals.Count != 2) return false;
+            int firstIndex = Literals.FindIndex(x => x == query.Literals[0]);
+            if (firstIndex != -1)
+                if (Literals[firstIndex == 0 ? 1 : 0] == Resolution.Negate(query.Literals[1]))
+                    return true; 
+            
+            return false;
         }
+
         public override bool Equals(object? obj)
         {
             return obj is Clause clause && Literals.OrderBy(x => x).SequenceEqual(clause.Literals.OrderBy(x => x));
@@ -21,5 +28,6 @@ namespace MathLogicAdvanced.Resolutions
         {
             return Literals.OrderBy(x => x).Aggregate(0, (current, literal) => current ^ literal.GetHashCode());
         }
+        
     }
 }

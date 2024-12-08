@@ -1,36 +1,69 @@
-﻿// See https://aka.ms/new-console-template for more information
-using MathLogicAdvanced.Chains;
-using MathLogicAdvanced.Resolutions;
+﻿using MathLogicAdvanced.Resolutions;
 
-Console.WriteLine("Hello, World!");
+var clauses = new List<Clause>();
+//clauses = new List<Clause>()
+//    {
+//        new Clause(new List<string>{"!S", "H"}),
+//        new Clause(new List<string>{"!H", "A"}),
+//        new Clause(new List<string>{"!A", "D"})
+//    };
+//Clause query = new Clause(new List<string> { "!S", "!D" });
+clauses = new List<Clause>()
+    {
+        new Clause(new List<string>{"!N", "S"}),
+        new Clause(new List<string>{"!P", "M"}),
+        new Clause(new List<string>{"!S", "!G"}),
+        new Clause(new List<string>{"!M", "N"}),
+    };
+Clause query = new Clause(new List<string> { "!M", "!G" });
 
-var engine = new Production();
+Resolution resolution = new Resolution();
+query.Literals[1] = Resolution.Negate(query.Literals[1]);
+bool result = resolution.Resolve(clauses, query);
 
-engine.AddFact(new Fact("A", true));
-engine.AddFact(new Fact("B", false));
+query.Literals[1] = Resolution.Negate(query.Literals[1]);
+Console.WriteLine($"Результат резолютивного вывода для запроса {string.Join(" | ",query.Literals)}: {result}");
 
-engine.AddRule(new Rule("Rule1",
-    facts => facts[0].Value == true && facts[1].Value == false,
-    facts => facts[1].Value = true
-));
+//Console.WriteLine("Введите импликации в формате 'A -> B' (введите 'done' для завершения ввода):");
 
-engine.ForwardChain();
-System.Console.WriteLine("Факты после прямого вывода:");
-engine.DisplayFacts();
+//while (true)
+//{
+//    var input = Console.ReadLine();
+//    if (input.ToLower() == "done")
+//    {
+//        break;
+//    }
 
-string goal = "B";
-bool result = engine.BackwardChain(goal);
-System.Console.WriteLine($"Обратный вывод: Цель '{goal}' подтверждена? {result}");
+//    var parts = input.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
+//    if (parts.Length == 2)
+//    {
+//        var premise = parts[0].Trim();
+//        var conclusion = parts[1].Trim();
+//        clauses.Add(new Clause(new List<string> { "!" + premise, conclusion}));
+//    }
+//    else
+//    {
+//        Console.WriteLine("Неверный ввод. Пожалуйста, используйте формат 'A -> B'.");
+//    }
+//}
 
+//Console.WriteLine("Введите запрос в формате 'A -> B':");
 
-var clauses = new List<Clause>
-            {
-                new Clause(new List<string> { "A", "B" }),   // A ∨ B
-                new Clause(new List<string> { "¬A", "C" }), // ¬A ∨ C
-                new Clause(new List<string> { "¬B" })        // ¬B
-            };
+//var queryInput = Console.ReadLine();
+//var queryParts = queryInput.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
 
-var query = new Clause(new List<string> { "¬C" }); // Запрос ¬C для проверки
+//if (queryParts.Length == 2)
+//{
+//    var queryPremise = queryParts[0].Trim();
+//    var queryConclusion = queryParts[1].Trim();
+//    var query = new Clause(new List<string> { "!" + queryPremise,queryConclusion});
 
-bool result = Resolve(clauses, query);
-Console.WriteLine($"Результат резолютивного вывода для запроса {string.Join(", ", query.Literals)}: {result}");
+//    Resolution resolution = new Resolution();
+//    bool result = resolution.Resolve(clauses, query);
+
+//    Console.WriteLine($"Результат резолютивного вывода для запроса {queryInput}: {result}");
+//}
+//else
+//{
+//    Console.WriteLine("Неверный запрос. Пожалуйста, используйте формат 'A -> B'.");
+//}
