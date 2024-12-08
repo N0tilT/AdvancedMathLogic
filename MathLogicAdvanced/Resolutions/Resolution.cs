@@ -13,8 +13,6 @@ namespace MathLogicAdvanced.Resolutions
             HashSet<Clause> newClauses = new HashSet<Clause>(clauses);
             Queue<Clause> clausesToTest = new Queue<Clause>(clauses);
 
-            if (newClauses.Any(x=> x.IsContradictory(query))) return true;
-
             while (clausesToTest.Count > 0)
             {
                 Console.WriteLine("\nДизъюнкты:");
